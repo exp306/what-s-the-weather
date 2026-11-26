@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#101827" />
+  <title>Atmos — Weather</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="weather-default">
+  <div class="weather-scene" id="weatherScene" aria-hidden="true">
+    <div class="sun-glow"></div>
+    <div class="cloud cloud-one"></div><div class="cloud cloud-two"></div>
+    <div class="rain-layer" id="rainLayer"></div>
+    <div class="sun-rays"></div>
+  </div>
+
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Atmos home"><span class="brand-mark">◒</span><span>atmos</span></a>
+      <div class="top-actions">
+        <span class="live-label"><span class="live-dot"></span> LIVE WEATHER</span>
+        <button class="edit-toggle" id="editToggle" type="button">✦ Visual edit</button>
+      </div>
+    </header>
+
+    <section class="intro">
+      <p class="eyebrow editable" data-editable>YOUR WEATHER, AT A GLANCE</p>
+      <h1 class="editable" data-editable>Find your <span>forecast.</span></h1>
+      <p class="intro-copy editable" data-editable>Real-time conditions and the next three days, wherever you are.</p>
+    </section>
+
+    <form class="search-form" id="searchForm">
+      <span class="search-icon" aria-hidden="true">⌕</span>
+      <input id="cityInput" type="search" placeholder="Search a city… e.g. Jakarta" autocomplete="off" aria-label="City name" />
+      <button type="submit" id="searchButton">Search <span>→</span></button>
+    </form>
+    <p class="search-hint" id="searchHint">Try “Tokyo”, “London”, or “New York”.</p>
+    <div class="status-message" id="statusMessage" role="status" aria-live="polite"></div>
+
+    <section class="weather-layout" id="weatherContent" aria-live="polite">
+      <article class="current-card panel">
+        <div class="card-topline">
+          <div><p class="card-kicker">CURRENT WEATHER</p><h2 id="locationName">Jakarta, Indonesia</h2><p class="date-line" id="currentDate">Loading local time…</p></div>
+          <span class="current-icon" id="currentIcon" aria-hidden="true">☀️</span>
+        </div>
+        <div class="temperature-row">
+          <div class="temperature" id="temperature">--<span>°</span></div>
+          <div class="condition-block"><strong id="condition">Getting conditions…</strong><span>Feels like <b id="feelsLike">--°</b></span></div>
+        </div>
+        <div class="current-divider"></div>
+        <div class="metrics">
+          <div class="metric"><span class="metric-icon">💧</span><div><small>HUMIDITY</small><strong id="humidity">--%</strong></div></div>
+          <div class="metric"><span class="metric-icon">➤</span><div><small>WIND SPEED</small><strong id="windSpeed">-- km/h</strong></div></div>
+          <div class="metric"><span class="metric-icon">🌡️</span><div><small>UV INDEX</small><strong id="uvIndex">--</strong></div></div>
+        </div>
+      </article>
+
+      <aside class="side-card panel">
+        <p class="card-kicker">A LITTLE WEATHER NOTE</p>
+        <div class="note-icon" id="noteIcon">🌤️</div>
+        <h3 id="weatherNote">A fresh look outside.</h3>
+        <p id="weatherAdvice">Search for a city to see what the day has in store.</p>
+        <div class="sun-times">
+          <div><span>☀ Sunrise</span><strong id="sunrise">--:--</strong></div>
+          <div><span>☾ Sunset</span><strong id="sunset">--:--</strong></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="forecast-section">
+      <div class="section-heading"><div><p class="card-kicker">PLAN AHEAD</p><h2 class="editable" data-editable>Next 3 days</h2></div><span class="forecast-caption">DAILY FORECAST</span></div>
+      <div class="forecast-grid" id="forecastGrid">
+        <article class="forecast-card"><span>—</span><b>☁️</b><strong>--°</strong><small>Loading</small></article>
+        <article class="forecast-card"><span>—</span><b>🌤️</b><strong>--°</strong><small>Loading</small></article>
+        <article class="forecast-card"><span>—</span><b>☀️</b><strong>--°</strong><small>Loading</small></article>
+      </div>
+    </section>
+
+    <footer><span>Atmos Weather</span><span>Weather data by Open-Meteo · No API key required</span></footer>
+  </main>
+
+  <div class="edit-panel" id="editPanel" aria-hidden="true">
+    <div class="edit-panel-header"><div><span class="edit-kicker">LIVE CUSTOMIZER</span><h3>Edit selected element</h3></div><button id="closeEditor" aria-label="Close editor">×</button></div>
+    <p class="selected-label" id="selectedLabel">Select an element on the page.</p>
+    <label>Text content<input id="editText" type="text" placeholder="Select a text element first"></label>
+    <div class="edit-control-row">
+      <label>Text color<input id="editColor" type="color" value="#ffffff"></label>
+      <label>Font size<input id="editFontSize" type="number" min="10" max="72" value="16"></label>
+    </div>
+    <div class="edit-control-row">
+      <label>Padding (px)<input id="editPadding" type="number" min="0" max="80" value="0"></label>
+      <label>Background<input id="editBackground" type="color" value="#182438"></label>
+    </div>
+    <button class="apply-edit" id="applyEdit" type="button">Apply changes</button>
+    <button class="reset-edit" id="resetEdits" type="button">Reset visual edits</button>
+    <p class="edit-tip">Tip: while Visual edit is on, click a heading, card, or text on the page to select it. Changes are saved in this browser.</p>
+  </div>
+  <div class="edit-overlay" id="editOverlay"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
